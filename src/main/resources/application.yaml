@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: MegaadInventory
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/megaad_db?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: Fabarias150!
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+
+    show-sql: true
+
+    properties:
+      hibernate:
+
+        format_sql: true
+
+    hibernate:
+      ddl-auto: validate
