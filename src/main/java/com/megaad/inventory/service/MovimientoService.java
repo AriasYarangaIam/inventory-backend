@@ -6,4 +6,5 @@ import com.megaad.inventory.dto.MovimientoResponseDTO;
 public interface MovimientoService {
     MovimientoResponseDTO registrarEntrada(MovimientoRequestDTO dto);
     MovimientoResponseDTO registrarSalida(MovimientoRequestDTO dto);
+    MovimientoResponseDTO registrarAjuste(MovimientoRequestDTO dto);
 }

@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
@@ -39,4 +40,7 @@ public class Movimiento {
 
     @Column(name = "motivo")
     private String motivo;
+
+    @Column(name = "precio_unitario")
+    private BigDecimal precioUnitario;
 }

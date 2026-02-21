@@ -22,6 +22,7 @@ public class MovimientoMapper {
                 .cantidad(mov.getCantidad())
                 .fecha(mov.getFecha())
                 .motivo(mov.getMotivo())
+                        .precioUnitario(mov.getPrecioUnitario())
                 .build())
                 .orElseThrow(() -> new RuntimeException("El movimiento entregado es de valor nulo"));
     }
@@ -34,6 +35,7 @@ public class MovimientoMapper {
                         .cantidad(d.getCantidad())
                         .fecha(LocalDateTime.now())
                         .motivo(d.getMotivo())
+                        .precioUnitario(d.getPrecioUnitario())
                         .build())
                 .orElse(null);
     }

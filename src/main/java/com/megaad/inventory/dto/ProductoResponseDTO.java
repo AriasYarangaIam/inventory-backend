@@ -16,4 +16,5 @@ public class ProductoResponseDTO {
     private Integer rin;
     private BigDecimal precioVenta;
     private Integer stock;
+    private Boolean activo;
 }

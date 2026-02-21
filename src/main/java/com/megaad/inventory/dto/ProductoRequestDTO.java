@@ -40,4 +40,6 @@ public class ProductoRequestDTO {
     @NotNull
     @Min(value = 0)
     private Integer stock;
+    @NotNull
+    private Boolean activo;
 }

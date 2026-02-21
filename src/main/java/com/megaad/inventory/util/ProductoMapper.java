@@ -26,6 +26,7 @@ public class ProductoMapper {
                         .rin(pro.getRin())
                         .precioVenta(pro.getPrecioVenta())
                         .stock(pro.getStock())
+                        .activo(pro.getActivo())
                         .build()).orElse(null);
     }
 
@@ -39,6 +40,7 @@ public class ProductoMapper {
                         .precioCosto(d.getPrecioCosto())
                         .precioVenta(d.getPrecioVenta())
                         .stock(d.getStock())
+                        .activo(d.getActivo())
                         .build())
                 .orElse(null);
     }

@@ -63,13 +63,33 @@ public class MovimientoServiceImpl implements MovimientoService {
         Movimiento movimiento = movimientoMapper.toEntity(dto, producto, TipoMovimiento.SALIDA);
         return movimientoMapper.toResponse(movimientoRepository.save(movimiento));
     }
+    @Override
+    @Transactional
+    public MovimientoResponseDTO registrarAjuste(MovimientoRequestDTO dto) {
+        validarDatosBasicos(dto);
+
+        Producto producto = productoRepository.findById(dto.getProductoId())
+                .orElseThrow(() -> new RuntimeException("El producto con ID " + dto.getProductoId() + " no existe."));
+
+        int stockAnterior = Optional.ofNullable(producto.getStock()).orElse(0);
+
+        producto.setStock(dto.getCantidad());
+        productoRepository.save(producto);
+
+        String motivoAuditoria = dto.getMotivo() + " | Stock anterior " + stockAnterior + " | Nuevo stock: " + dto.getCantidad();
+        dto.setMotivo(motivoAuditoria);
+
+        Movimiento movimiento = movimientoMapper.toEntity(dto, producto, TipoMovimiento.AJUSTE);
+        return movimientoMapper.toResponse(movimientoRepository.save(movimiento));
+    }
+
 
     private void validarDatosBasicos(MovimientoRequestDTO dto) {
         Objects.requireNonNull(dto, "El DTO de movimiento no puede ser nulo");
         Objects.requireNonNull(dto.getProductoId(), "El ID del producto no puede ser nulo");
         Objects.requireNonNull(dto.getCantidad(), "La cantidad no puede ser nula");
 
-        if (dto.getCantidad() <= 0) {
+        if (dto.getCantidad() < 0) {
             throw new IllegalArgumentException("La cantidad debe ser mayor a cero");
         }
     }

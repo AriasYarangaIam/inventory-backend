@@ -14,7 +14,9 @@ import java.math.BigDecimal;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "productos")
+@Table(name = "productos", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"marca_id", "producto_modelo", "producto_ancho", "producto_perfil", "producto_rin"})
+})
 public class Producto {
 
     @Id
@@ -46,4 +48,7 @@ public class Producto {
 
     @Column(name = "stock_actual")
     private Integer stock;
+
+    @Column(name = "producto_estado")
+    private Boolean activo;
 }
