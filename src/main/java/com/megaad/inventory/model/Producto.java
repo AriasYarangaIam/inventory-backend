@@ -2,11 +2,18 @@ package com.megaad.inventory.model;
 
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 
 @Data
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "productos")
 public class Producto {
 
@@ -18,9 +25,6 @@ public class Producto {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "marca_id")
     private Marca marca;
-
-    @Transient
-    private Integer marcaId;
 
     @Column(name = "producto_modelo", nullable = false)
     private String modelo;
