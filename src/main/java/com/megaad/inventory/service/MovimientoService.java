@@ -1,7 +1,8 @@
 package com.megaad.inventory.service;
 
-import com.megaad.inventory.model.Movimiento;
+import com.megaad.inventory.dto.MovimientoRequestDTO;
+import com.megaad.inventory.dto.MovimientoResponseDTO;
 
 public interface MovimientoService {
-    Movimiento registrarEntrada(Integer id, Integer cantidad, String motivo);
+    MovimientoResponseDTO registrarEntrada(MovimientoRequestDTO dto);
 }

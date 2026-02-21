@@ -1,9 +1,11 @@
 package com.megaad.inventory.service;
 
-import com.megaad.inventory.model.Producto;
+import com.megaad.inventory.dto.ProductoRequestDTO;
+import com.megaad.inventory.dto.ProductoResponseDTO;
+
 import java.util.List;
 
 public interface ProductoService {
-    List<Producto> obtenerTodos();
-    Producto guardar(Producto producto);
+    List<ProductoResponseDTO> obtenerTodos();
+    ProductoResponseDTO guardar(ProductoRequestDTO dto);
 }
