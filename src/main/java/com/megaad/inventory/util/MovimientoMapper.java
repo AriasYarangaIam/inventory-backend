@@ -1,10 +1,13 @@
 package com.megaad.inventory.util;
 
+import com.megaad.inventory.dto.MovimientoRequestDTO;
 import com.megaad.inventory.dto.MovimientoResponseDTO;
+import com.megaad.inventory.enums.TipoMovimiento;
 import com.megaad.inventory.model.Movimiento;
 import com.megaad.inventory.model.Producto;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Component
@@ -23,13 +26,13 @@ public class MovimientoMapper {
                 .orElseThrow(() -> new RuntimeException("El movimiento entregado es de valor nulo"));
     }
 
-    public Movimiento toEntity(MovimientoResponseDTO dto, Producto producto) {
+    public Movimiento toEntity(MovimientoRequestDTO dto, Producto producto, TipoMovimiento tipoMovimiento) {
         return Optional.ofNullable(dto)
                 .map(d -> Movimiento.builder()
                         .producto(producto)
-                        .movimiento(d.getTipoMovimiento())
+                        .movimiento(tipoMovimiento)
                         .cantidad(d.getCantidad())
-                        .fecha(d.getFecha())
+                        .fecha(LocalDateTime.now())
                         .motivo(d.getMotivo())
                         .build())
                 .orElse(null);

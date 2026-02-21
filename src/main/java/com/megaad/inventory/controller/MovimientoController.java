@@ -26,4 +26,10 @@ public class MovimientoController {
                 .status(HttpStatus.CREATED)
                 .body(movimientoService.registrarEntrada(dto));
     }
+    @PostMapping("/salida")
+    public ResponseEntity<MovimientoResponseDTO> registrarSalida(@RequestBody @Valid MovimientoRequestDTO dto) {
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(movimientoService.registrarSalida(dto));
+    }
 }

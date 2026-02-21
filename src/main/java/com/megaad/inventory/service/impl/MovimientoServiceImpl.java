@@ -29,14 +29,7 @@ public class MovimientoServiceImpl implements MovimientoService {
     @Override
     @Transactional
     public MovimientoResponseDTO registrarEntrada(MovimientoRequestDTO dto) {
-
-        Objects.requireNonNull(dto, "El DTO de movimiento no puede ser nulo");
-        Objects.requireNonNull(dto.getProductoId(), "El ID del producto no puede ser nulo");
-        Objects.requireNonNull(dto.getCantidad(), "La cantidad no puede ser nula");
-
-        if (dto.getCantidad() <= 0) {
-            throw new IllegalArgumentException("La cantidad debe ser mayor a cero");
-        }
+        validarDatosBasicos(dto);
 
         Producto producto = productoRepository.findById(dto.getProductoId())
                 .orElseThrow(() -> new RuntimeException(
@@ -47,16 +40,37 @@ public class MovimientoServiceImpl implements MovimientoService {
         );
         productoRepository.save(producto);
 
-        return movimientoMapper.toResponse(
-                movimientoRepository.save(
-                        Movimiento.builder()
-                                .producto(producto)
-                                .movimiento(TipoMovimiento.ENTRADA)
-                                .cantidad(dto.getCantidad())
-                                .fecha(LocalDateTime.now())
-                                .motivo(dto.getMotivo())
-                                .build()
-                )
-        );
+        Movimiento movimiento = movimientoMapper.toEntity(dto, producto, TipoMovimiento.ENTRADA);
+        return movimientoMapper.toResponse(movimientoRepository.save(movimiento));
+    }
+    @Override
+    @Transactional
+    public MovimientoResponseDTO registrarSalida(MovimientoRequestDTO dto) {
+        validarDatosBasicos(dto);
+
+        Producto producto = productoRepository.findById(dto.getProductoId())
+                .orElseThrow(() -> new RuntimeException("El producto con ID " + dto.getProductoId() + " no existe."));
+
+        int stockActual = Optional.ofNullable(producto.getStock()).orElse(0);
+
+        if (stockActual < dto.getCantidad()) {
+            throw new IllegalArgumentException("Operación rechazada: Stock insuficiente. Tienes " + stockActual +
+                    " unidades, pero intentas vender " + dto.getCantidad() + ".");
+        }
+        producto.setStock(stockActual - dto.getCantidad());
+        productoRepository.save(producto);
+
+        Movimiento movimiento = movimientoMapper.toEntity(dto, producto, TipoMovimiento.SALIDA);
+        return movimientoMapper.toResponse(movimientoRepository.save(movimiento));
+    }
+
+    private void validarDatosBasicos(MovimientoRequestDTO dto) {
+        Objects.requireNonNull(dto, "El DTO de movimiento no puede ser nulo");
+        Objects.requireNonNull(dto.getProductoId(), "El ID del producto no puede ser nulo");
+        Objects.requireNonNull(dto.getCantidad(), "La cantidad no puede ser nula");
+
+        if (dto.getCantidad() <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser mayor a cero");
+        }
     }
 }
